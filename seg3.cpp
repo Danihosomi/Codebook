@@ -1,18 +1,25 @@
 #include <bits/stdc++.h>
 #define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define lsb(x) ((x)&(-x))
+#define f first
+#define s second
 #define R(x) ((x<<1)+1)
 #define L(x) (x<<1)
+#define pb(x) push_back(x)
+#define eb(x) emplace_back(x)
 #define ii pair<int,int>
 #define INF 1e9+1
-#define NEG -1e9+1
 #define BUG(x) cout<<x<<endl;
+#define bug cout<<"oi"<<endl;
+#define all(x) x.begin(),x.end()
+#define sz(x) (long long)x.size()
 using namespace std;
-typedef long long int ll;
+typedef vector<int> vi;
+typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
-int T, N, Q, V[100005], timer;
+int N, Q, V[100005];
 ll seg3[4*100005];
 
 ll join(ll A, ll B){
@@ -58,40 +65,19 @@ ll query(int id,int l,int r,int i,int j){
 }
 
 int main(){_
-	cin>>T;
+	cin>>N>>Q;
 
-	while(T--){
-		timer++;
-		cin>>N>>Q;
-		for(int i=1;i<=N;i++)
-			cin>>V[i];
-		build(1,1,N);
-		
-		cout<<"Case "<<timer<<":"<<'\n';
-		while(Q--){
-			int A, B;
-			ll C;
-			cin>>A;
-			if(A==1){
-				cin>>B;
-				C=query(1,1,N,B+1,B+1);
-				cout<<C<<'\n';
-				update(1,1,N,-C,B+1);
-			}
-			if(A==2){
-				cin>>B>>C;
-				update(1,1,N,C,B+1);
-			}
-			if(A==3){
-				cin>>B>>C;
-				cout<<query(1,1,N,B+1,C+1)<<'\n';
-			}
-		}
-		for(int i=1;i<=4*N;i++){
-			if(i<=N)
-				V[i]=0;
-			seg3[i]=0;
-		}
+	for(int i=1;i<=N;i++)
+		cin>>V[i];
+
+	build(1,1,N);
+	while(Q--){
+		int A, B, C;
+		cin>>A>>B>>C;
+		if(A==1)
+			update(1,1,N,B,C);
+		else
+			cout<<query(1,1,N,B,C)<<'\n';
 	}
 
 	return 0;

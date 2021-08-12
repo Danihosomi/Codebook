@@ -1,27 +1,36 @@
 #include <bits/stdc++.h>
-#define INF 1e16
-#define ii pair<int,int>
 #define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define lsb(x) ((x) & (-x))
+#define lsb(x) ((x)&(-x))
+#define f first
+#define s second
+#define R(x) ((x<<1)+1)
+#define L(x) (x<<1)
+#define pb(x) push_back(x)
+#define eb(x) emplace_back(x)
+#define ii pair<int,int>
+#define INF 1e9+1
+#define BUG(x) cout<<x<<endl;
+#define bug cout<<"oi"<<endl;
+#define all(x) x.begin(),x.end()
+#define sz(x) (long long)x.size()
 using namespace std;
-typedef long long int ll;
+typedef vector<int> vi;
+typedef long long ll;
+const ll mod=1e9+7;
+//freopen("1.txt", "r", stdin);
  
-int N, M, tam, ans;
-vector<int> V[100005];
+int N, M, tam, odd;
+vi V[100005], E;
 set< ii > S;
-vector<int> E;
  
 void dfs(int A){
-    if(V[A].size()%2!=0)
-        ans++;
+    if(sz(V[A]))
+        odd++;
  
-    for(int i=0;i<V[A].size();i++){
-        int X;
-        X=V[A][i];
-        if(S.count({max(A,X),min(X,A)})) continue;
- 
-        S.insert({max(A,X),min(A,X)});
-        dfs(X);
+    for(auto v : V[A]){
+        if(S.count({max(A,v),min(v,A)})) continue;
+        S.insert({max(A,v),min(A,v)});
+        dfs(v);
     }
     E.push_back(A);
 }
@@ -37,7 +46,7 @@ int main(){_
     }
  
     dfs(1);
-    if(E.size()==tam && E[0]==1 && E[tam-1]==1 && !ans){
+    if(E[0]==1 && E[tam-1]==1 && !odd){
         for(int i=tam-1;i>=0;i--)
             cout<<E[i]<<' ';
         cout<<'\n';

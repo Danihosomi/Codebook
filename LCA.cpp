@@ -1,26 +1,34 @@
 #include <bits/stdc++.h>
 #define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define lsb(x) ((x)&(-x))
+#define f first
+#define s second
 #define R(x) ((x<<1)+1)
 #define L(x) (x<<1)
+#define pb(x) push_back(x)
+#define eb(x) emplace_back(x)
 #define ii pair<int,int>
 #define INF 1e9+1
 #define BUG(x) cout<<x<<endl;
+#define bug cout<<"oi"<<endl;
+#define all(x) x.begin(),x.end()
+#define sz(x) (long long)x.size()
 using namespace std;
 typedef vector<int> vi;
-typedef long long int ll;
+typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
+
 int N, tin[100005], tout[100005], timer, Q, up[100005][22], dist[100005];
-vector<int> V[100005];
+vi V[100005];
 
 void dfs(int A,int pai){
     tin[A]=timer;
     dist[A]=dist[pai]+1;
     timer++;
     up[A][0]=pai;
-    for(int i=1;i<=L;i++)
+    for(int i=1;i<=21;i++)
         up[A][i]=up[up[A][i-1]][i-1];
 
     for(auto v : V[A]){
@@ -49,19 +57,19 @@ int LCA(int A,int B){
 
 int main(){_
     cin>>N>>Q;
+
     for(int i=0;i<N;i++){
         int A, B; cin>>A>>B;
-        V[A].emplace_back(B);
-        V[B].emplace_back(A);
+        V[A].eb(B);
+        V[B].eb(A);
     }
 
     dfs(0,0);
 
     while(Q--){
-        int A, B, C;
+        int A, B;
         cin>>A>>B;
-        C=LCA(A,B);
-        cout<<dist[A]+dista[B]-2*dist[C];
+        cout<<LCA(A,B)<<'\n';
     }
 
     return 0;

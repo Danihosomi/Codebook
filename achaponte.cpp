@@ -1,11 +1,18 @@
 #include <bits/stdc++.h>
 #define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define lsb(x) ((x)&(-x))
+#define f first
+#define s second
 #define R(x) ((x<<1)+1)
 #define L(x) (x<<1)
+#define pb(x) push_back(x)
+#define eb(x) emplace_back(x)
 #define ii pair<int,int>
 #define INF 1e9+1
 #define BUG(x) cout<<x<<endl;
+#define bug cout<<"oi"<<endl;
+#define all(x) x.begin(),x.end()
+#define sz(x) (long long)x.size()
 using namespace std;
 typedef vector<int> vi;
 typedef long long ll;
@@ -34,39 +41,24 @@ void dfs(int A,int pai){
 }
 
 int main(){_
-    cin>>T;
-    while(T--){
-        id++;
-        resp.clear();
-        timer=0;
     
-        cin>>N>>M;
+    cin>>N>>M;
 
-        while(M--){
-            int A, B;
-            cin>>A>>B;
-            V[A].emplace_back(B);
-            V[B].emplace_back(A);
-        }
-
-      for(int i=1;i<=N;i++){
-            if(!tin[i])
-                dfs(i,i);
-        }
-        cout<<"Caso #"<<id<<'\n';
-        if(resp.size()){
-            sort(resp.begin(),resp.end());
-            cout<<resp.size()<<'\n';
-            for(auto r : resp)
-                cout<<r.first<<' '<<r.second<<'\n';
-        }
-        else
-            cout<<"Sin bloqueos"<<'\n';
-
-        for(int i=1;i<=N;i++){
-            tin[i]=low[i]=0;
-            V[i].clear();
-        }
+    while(M--){
+        int A, B;
+        cin>>A>>B;
+        V[A].eb(B);
+        V[B].eb(A);
     }
+
+    for(int i=1;i<=N;i++)
+        if(!tin[i])
+            dfs(i,i);
+        
+    cout<<resp.size()<<'\n';
+    for(auto r : resp)
+        cout<<r.first<<' '<<r.second<<'\n';
+        
+
     return 0;
 }

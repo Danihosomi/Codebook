@@ -1,12 +1,23 @@
 #include <bits/stdc++.h>
+#define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define lsb(x) ((x)&(-x))
-#define INF 1e9+1
+#define f first
+#define s second
 #define R(x) ((x<<1)+1)
 #define L(x) (x<<1)
+#define pb(x) push_back(x)
+#define eb(x) emplace_back(x)
 #define ii pair<int,int>
-#define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define INF 1e9+1
+#define BUG(x) cout<<x<<endl;
+#define bug cout<<"oi"<<endl;
+#define all(x) x.begin(),x.end()
+#define sz(x) (long long)x.size()
 using namespace std;
-typedef long long int ll;
+typedef vector<int> vi;
+typedef long long ll;
+const ll mod=1e9+7;
+//freopen("1.txt", "r", stdin);
 
 ll N, Q, seg3[4*200005], lazy[4*200005], V[200005];
 
