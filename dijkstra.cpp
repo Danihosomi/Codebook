@@ -34,6 +34,7 @@ void dijkstra(){
         int A; ll D;
         A=P.top().s;
         D=P.top().f;
+        P.pop();
         if(D>dist[A]) continue;
         for(auto v : V[A]){
             if(dist[v.f]>v.s+dist[A]){
