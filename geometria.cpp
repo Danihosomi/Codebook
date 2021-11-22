@@ -38,6 +38,21 @@ struct tvector{//p, q
         return (x*q.y - y*q.x);
     }
 };
+
+vector<tvector> V;
+
+ll area_poli(){
+    ll ans=0;
+    V.eb(V[0]);
+    
+    for(int i=0;i<sz(V)-1;i++)
+        ans+=V[i]^V[i+1];
+    
+    V.pop_back();
+
+    return abs(ans)/2;
+}
+
  
  
  

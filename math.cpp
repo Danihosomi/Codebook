@@ -62,6 +62,18 @@ void number_factors_sieve(){
     }
 }
 
+ll binomial(int n, int k) {
+    if (n < k) return 0;
+    if (k == 0 or k == n) return 1;
+    ll prod = 1;
+    for (int i = 1; i <= k; i++) {
+        prod *= n + 1 - i;
+        prod /= k;
+    }
+    return prod;
+}
+
+
 int main(){_
 
 
