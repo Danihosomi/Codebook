@@ -20,7 +20,6 @@ typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
-int prime[MAXN];
 
 ll binpow(ll A,ll E){
     ll ans = 1;
@@ -45,6 +44,7 @@ ll inv_mod(ll a,ll b){
 }
 
 void number_factors_sieve(){
+    int prime[MAXN];
     for(int i=2;i<=(int)2e6;i++){
         if(!prime[i]){
             for(int j=2;j*i<=(int)2e6;j++){
@@ -73,6 +73,21 @@ ll binomial(int n, int k) {
     return prod;
 }
 
+ll sum(ll X){// Soma de 1 até N
+    return ((((X%mod)*((X+1)%mod))%mod)*inv_mod(2,mod))%mod;
+}
+
+ll sum_of_divisors_from1_toN(ll N){
+
+    ll l=1, r, k, ans=0;
+    while(l<=N){
+        k=N/l; r=N/k; k%=mod;
+        ans=(ans+(((sum(r)-sum(l-1)+mod)%mod+mod)*k)%mod)%mod;
+        l=r+1;
+    }
+    
+    return ans;
+}
 
 int main(){_
 
