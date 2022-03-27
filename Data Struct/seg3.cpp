@@ -38,16 +38,16 @@ void build(int id,int l,int r){
 	seg3[id]=join(seg3[L(id)],seg3[R(id)]);
 }
 
-void update(int id,int l,int r,int val, int i){
+void update(int id,int l,int r,int i,int val){
 	if(l==r && l==i){
 		seg3[id]+=val;
 		return;
 	}
 	int meio=(l+r)>>1;
 	if(meio>=i)
-		update(L(id),l,meio,val,i);
+		update(L(id),l,meio,i,val);
 	else
-		update(R(id),meio+1,r,val,i);
+		update(R(id),meio+1,r,i,val);
 	
 	seg3[id]=join(seg3[L(id)],seg3[R(id)]);
 }

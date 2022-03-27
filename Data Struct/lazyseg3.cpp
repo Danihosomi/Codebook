@@ -19,71 +19,65 @@ typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
-ll N, Q, seg3[4*200005], lazy[4*200005], V[200005];
+struct node{
+    ll sum, lazy;
+};
+
+int N, Q, V[200005];
+node seg3[4*200005];
 
 ll join(ll A,ll B){
     return A+B;
 }
 
-void build(int node,int l,int r){
+void build(int id,int l,int r){
     if(l==r){
-        seg3[node]=V[l];
+        seg3[id].sum=V[l];
+        seg3[id].lazy=0;
         return ;
     }
-    int meio;
-    meio=(l+r)>>1;
-    build(L(node),l,meio);
-    build(R(node),meio+1,r);
-    seg3[node]=join(seg3[L(node)],seg3[R(node)]);
+    int meio=(l+r)>>1;
+    build(L(id),l,meio);
+    build(R(id),meio+1,r);
+    seg3[id].sum=join(seg3[L(id)].sum,seg3[R(id)].sum);
 }
 
-void update(int node,int l,int r,int i,int j,int val){
-    if(lazy[node]){
-        seg3[node]=lazy[node]*(r-l+1);
-        if(r!=l){
-            lazy[R(node)]=lazy[node];
-            lazy[L(node)]=lazy[node];
-        }
-        lazy[node]=0;
-    }
+void refresh(int id,int l,int r){
+    if(!seg3[id].lazy) return;
+
+    ll num=seg3[id].lazy; seg3[id].lazy=0;
+    seg3[id].sum=(r-l+1)*num;
+    
+    if(l==r) return ;
+    seg3[L(id)].lazy+=num;
+    seg3[R(id)].lazy+=num;
+}
+
+void update(int id,int l,int r,int i,int j,int val){
+    refresh(id,l,r);
     if(j<l || r<i) return;
     if(i<=l && r<=j){
-        seg3[node]=val*(r-l+1);
-        if(r!=l){
-            lazy[R(node)]=val;
-            lazy[L(node)]=val;
-        }
+        seg3[id].lazy=val;
+        refresh(id,l,r);
+        return ;
     }
-    else{
-        int meio;
-        meio=(l+r)>>1;
-        update(L(node),l,meio,i,j,val);
-        update(R(node),meio+1,r,i,j,val);
-        seg3[node]=join(seg3[L(node)],seg3[R(node)]);
-    }
+    
+    int meio=(l+r)>>1;
+    update(L(id),l,meio,i,j,val);
+    update(R(id),meio+1,r,i,j,val);
+    seg3[id].sum=join(seg3[L(id)].sum,seg3[R(id)].sum);    
 }
 
-ll query(int node,int l,int r,int i,int j){
-    if(lazy[node]){
-        seg3[node]=lazy[node]*(r-l+1);
-        if(l!=r){
-            lazy[R(node)]=lazy[node];
-            lazy[L(node)]=lazy[node];
-        }
-        lazy[node]=0;
-    }
-
+ll query(int id,int l,int r,int i,int j){
+    refresh(id,l,r);
     if(r<i || j<l) return 0;
-
-    if(i<=l && r<=j) return seg3[node];
-    int meio;
-    meio=(l+r)>>1;
-    return join(query(L(node),l,meio,i,j),query(R(node),meio+1,r,i,j));
+    if(i<=l && r<=j) return seg3[id].sum;
+    int meio=(l+r)>>1;
+    return join(query(L(id),l,meio,i,j),query(R(id),meio+1,r,i,j));
 }
 
 int main(){_
     cin>>N>>Q;
-
     for(int i=1;i<=N;i++)
         cin>>V[i];
 
@@ -92,7 +86,7 @@ int main(){_
     while(Q--){
         int A;
         cin>>A;
-        if(A==1){
+        if(!A){
             int B, C, K;
             cin>>B>>C>>K;
             update(1,1,N,B,C,K);
@@ -103,6 +97,6 @@ int main(){_
             cout<<query(1,1,N,B,C)<<'\n';
         }
     }
-
+    
     return 0;
 }
