@@ -39,6 +39,19 @@ ll mdc(ll A,ll B){
     return mdc(B,A%B);
 }
 
+int gcdExtended(int a,int b,int& x,int& y){
+    if(!a){
+        x=0; y=1;
+        return b;
+    }
+
+    int x1, y1;
+    int gcd=gcdExtended(b%a,a,x1,y1);
+    x=y1-(b/a)*x1; y=x1;
+
+    return gcd;
+}
+
 ll inv_mod(ll a,ll b){
     return (a > 1 ? b-inv_mod(b%a, a)*b/a : 1);
 }
@@ -62,15 +75,10 @@ void number_factors_sieve(){
     }
 }
 
-ll binomial(int n, int k) {
-    if (n < k) return 0;
-    if (k == 0 or k == n) return 1;
-    ll prod = 1;
-    for (int i = 1; i <= k; i++) {
-        prod *= n + 1 - i;
-        prod /= k;
-    }
-    return prod;
+ll binomial(ll x,ll k) {
+    double res=1;
+    for(int i=1;i<=k;i++) res=(res*(x-k+i))/i;
+    return (ll)(res+0.01);
 }
 
 ll sum(ll X){// Soma de 1 até N
