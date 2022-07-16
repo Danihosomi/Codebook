@@ -37,6 +37,10 @@ struct tvector{//p, q
     ll operator ^(tvector q) const {
         return (x*q.y - y*q.x);
     }
+    bool operator < (tvector a) const {
+		if (x!=a.x) return x < a.x;
+        return y<a.y;
+	}
 };
 
 int sgn(ll x){ 
@@ -56,17 +60,21 @@ bool check_inter(tvector a, tvector b, tvector c, tvector d) {
     return (sgn((b-a)^(c-a)) != sgn((b-a)^(d-a)) && sgn((d-c)^(a-c)) != sgn((d-c)^(b-c)));
 }
 
+double distPointToPoint(tvector p, tvector q){//distancia do ponto R ao ponto Q
+    return ~(p-q);
+}
+
 double distPointToLine(tvector p, tvector q, tvector r){//distancia do ponto R à linha deerminada pelos pontos P e Q
     return fabs(((r-p)^(q-p))/(~(q-p)));
 }
 
 double distanceSegmentPoint(tvector a, tvector b, tvector p){
-	if ((p - a)%(b - a)<0) // Checa se p está abaixo de s
-		return distancePointPoint(p, a);
-	if ((p - b)%(a - b)<0) // Checa se p está acima de t
-		return distancePointPoint(p, b);
+	if ((p - a)*(b - a)<0) // Checa se p está abaixo de s
+		return ~(p-a);
+	if ((p - b)*(a - b)<0) // Checa se p está acima de t
+		return ~(p-b);
 
-	return distanceLinePoint(a, b, p);
+	return distPointToLine(a, b, p);
 }
 
 int orientation(tvector a,tvector b,tvector c){
@@ -85,7 +93,7 @@ int ccw(tvector a, tvector b, tvector c,int coolinear){ // Counter Clock-Wise
 }
 
 double area_poli(vector<tvector>&V){
-    double ans=0; V.eb(V[0]);
+    double ans=0; V.pb(V[0]);
     for(int i=0;i<sz(V)-1;i++) ans+=V[i]^V[i+1];
     V.pop_back();
     return abs(ans)/2;
@@ -120,6 +128,31 @@ void convex_hull(vector<tvector>& v,int coolinear){
     for(auto a : up) v.pb(a);
     for(int i=sz(down)-2;i>0;i--) v.pb(down[i]);
     reverse(all(v));
+}
+
+double minimumdist(vector<tvector> v){
+    sort(all(v));
+    int p=0;
+    set<ii> active;
+    double ans=distPointToPoint(v[0],v[1]);
+
+    for(int i=0;i<sz(v);i++){
+        while(v[i].x-v[p].x>ans){
+            active.erase({v[p].y,p});
+            p++;
+        }
+
+        ii acha = {v[i].y-floor(ans),0};
+        auto it = active.lower_bound(acha);
+
+        while(it!=active.end() && it.f<=v[i].y+floor(ans)){
+            ans=min(ans,distPointToPoint(v[i],v[it.s]));
+            it++;
+        }
+        active.insert({v[i].y,i});
+    }
+
+    return ans;
 }
  
 int main(){_
