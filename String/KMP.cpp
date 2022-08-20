@@ -19,19 +19,18 @@ typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
-int pi[1005];
+vi kmp(string c){
+    vi pi(n);
 
-void KMP(string X){
-    for(int i=1;i<sz(X);i++){
+    for(int i=1;i<sz(c);i++){
         int j=pi[i-1];
-        while(j && X[i]!=X[j])
-            j=pi[j-1];
-        
-        if(X[i]==X[j])
-            j++;
+        while(j && c[i]!=c[j]) j=pi[j-1];
+        if(c[i]==c[j]) j++;
 
         pi[i]=j;
     }
+
+    return pi;   
 }
 
 int main(){
