@@ -18,20 +18,19 @@ typedef vector<int> vi;
 typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
- 
+
+int t;
+
 struct matrix{
     ll m[10][10];
 };
  
-ll N;
-matrix b, ans;
- 
 matrix mult(matrix A,matrix B){
     matrix ans;
-    for (int i=0;i<2;i++){
-        for (int j=0;j<2;j++){
+    for (int i=0;i<t;i++){
+        for (int j=0;j<t;j++){
             ans.m[i][j]=0;
-            for (int k=0;k<2;k++){
+            for (int k=0;k<t;k++){
                 ans.m[i][j]=(ans.m[i][j]+A.m[i][k]*B.m[k][j])%mod;
             }
         }
@@ -41,8 +40,8 @@ matrix mult(matrix A,matrix B){
  
 matrix fexpo(matrix B,ll E){
     matrix ans;
-    for (int i=0;i<2;i++){
-        for (int j=0;j<2;j++){
+    for (int i=0;i<t;i++){
+        for (int j=0;j<t;j++){
             ans.m[i][j]=(i==j ? 1 : 0);
         }
     }
@@ -55,8 +54,6 @@ matrix fexpo(matrix B,ll E){
  
     return ans;
 }
- 
- 
  
 int main(){_
     

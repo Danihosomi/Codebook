@@ -27,6 +27,7 @@ Algebra
 # 5 - Others
 Kadane's Algorithm
 Inversion Count Merge Sort
+
 # 6 - String
 Hash
 KMP

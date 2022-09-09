@@ -21,7 +21,7 @@ ll fw[3003][3003];
 ll getRes(int x,int y){
     ll ans=0;
     while(x){
-        while(int i=y;i>0;i-=lsb(i)) ans+=fw[x][y];
+        for(int i=y;i>0;i-=lsb(i)) ans+=fw[x][y];
         x-=lsb(x);
     }
     return ans;
