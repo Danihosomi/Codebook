@@ -20,20 +20,20 @@ typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
-int F[200005], N;
+int fw[200005], n;
 
-void update(int X,int val){
-    while(X<=N){
-        F[X]+=val;
-        X+=lsb(X);
+void update(int x,int val){
+    while(x<=n){
+        fw[x]+=val;
+        x+=lsb(x);
     }
 }
 
-int query(int X){
+int query(int x){
     int ans=0;
-    while(X){
-        ans+=F[X];
-        X-=lsb(X);
+    while(x){
+        ans+=fw[x];
+        x-=lsb(x);
     }
     return ans;
 }
