@@ -5,8 +5,7 @@
 #define s second
 #define R(x) ((x<<1)+1)
 #define L(x) (x<<1)
-#define pb(x) push_back(x)
-#define eb(x) emplace_back(x)
+#define pb push_back
 #define ii pair<int,int>
 #define INF 1e9+1
 #define BUG(x) cout<<x<<endl;
@@ -24,35 +23,35 @@ struct aresta{ // Representa uma aresta
     ll cap, flow;
 };
 
-int N, M, S, T, cont; // S inicio e T final
-vector<aresta> E; // Arestas
-vi V[10005], level, ptr;
-queue<int> Q;
+int n, m, S, T, cont, vis[10005]; // S inicio e T final
+vector<aresta> e; // Arestas
+vi v[10005], level, ptr;
+queue<int> q;
 
 int bfs(){
-    while(!Q.empty()){
-        int X=Q.front(); Q.pop();
-        for(auto id : V[X]){
-            if((E[id].cap-E[id].flow<1) || (level[E[id].b]!=-1)) continue;
-            level[E[id].b]=level[X]+1;
-            Q.push(E[id].b);
+    while(!q.empty()){
+        int X=q.front(); q.pop();
+        for(auto id : v[X]){
+            if((e[id].cap-e[id].flow<1) || (level[e[id].b]!=-1)) continue;
+            level[e[id].b]=level[X]+1;
+            q.push(e[id].b);
         }
     }
     return level[T]!=-1;
 }
 
-ll dfs(int X,ll push){
-    if(!push || X==T)
+ll dfs(int x,ll push){
+    if(!push || x==T)
         return push;
 
-    for(int& i=ptr[X];i<sz(V[X]);i++){
-        int id=V[X][i];
-        int u=E[id].b;
-        if((level[X]+1!=level[u]) || (E[id].cap-E[id].flow<1)) continue;
-        ll tr=dfs(u,min(push,E[id].cap-E[id].flow));
+    for(int& i=ptr[x];i<sz(v[x]);i++){
+        int id=v[x][i];
+        int u=e[id].b;
+        if((level[x]+1!=level[u]) || (e[id].cap-e[id].flow<1)) continue;
+        ll tr=dfs(u,min(push,e[id].cap-e[id].flow));
         if(tr==0) continue;
-        E[id].flow+=tr;
-        E[id^1].flow-=tr;
+        e[id].flow+=tr;
+        e[id^1].flow-=tr;
         return tr;
     }
 
@@ -61,12 +60,12 @@ ll dfs(int X,ll push){
 
 ll dinic(){
     ll ans=0;
-    level.resize(N+2); ptr.resize(N+2);
+    level.resize(n+2); ptr.resize(n+2);
 
     while(true){
         fill(all(level),-1);
         level[S]=0;
-        Q.push(S);
+        q.push(S);
         if(!bfs()) break;
         fill(all(ptr),0);
         while(ll push=dfs(S,(ll)1e18))
@@ -76,20 +75,36 @@ ll dinic(){
     return ans;
 }
 
-int main(){_
-    cin>>N>>M;
-    S=1; T=N;
+void addEdge(int a,int b,ll capa){
+    e.pb({a,b,capa});
+    e.pb({b,a,0});
+    v[a].pb(cont);
+    v[b].pb(cont+1);
+    cont+=2; 
+}
 
-    while(M--){
-        int A, B, C; cin>>A>>B>>C;
-        E.push_back({A,B,C});
-        E.push_back({B,A,0});
-        V[A].eb(cont);
-        V[B].eb(cont+1);
-        cont+=2;
+vector<pair<int, int>> get_cut() {
+	vector<pair<int, int>> cut;
+	vector<int> st = {S};
+	vis[S] = 1;
+	while (st.size()) {
+		int u = st.back(); st.pop_back();
+		for (auto x : v[u]){ 
+            aresta k=e[x];
+            if (!vis[k.b] && k.flow < k.cap) vis[k.b] = 1, st.push_back(k.b);
+        }
     }
+	for (int i = 1; i <=n; i++) 
+        for (auto x : v[i]){ 
+            aresta k=e[x];
+            if (vis[i] && !vis[k.b] && !(x%2)) cut.emplace_back(i, k.b);
+        }
+    
+	return cut;
+}
 
-    cout<<dinic()<<'\n';
+int main(){_
+    S=1; T=n;
 
     return 0;
 }
