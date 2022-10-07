@@ -77,26 +77,6 @@ ll query(int id,int l,int r,int i,int j){
 }
 
 int main(){_
-    cin>>N>>Q;
-    for(int i=1;i<=N;i++)
-        cin>>V[i];
-
-    build(1,1,N);
-
-    while(Q--){
-        int A;
-        cin>>A;
-        if(!A){
-            int B, C, K;
-            cin>>B>>C>>K;
-            update(1,1,N,B,C,K);
-        }
-        else{
-            int B, C;
-            cin>>B>>C;
-            cout<<query(1,1,N,B,C)<<'\n';
-        }
-    }
     
     return 0;
 }

@@ -14,7 +14,7 @@ using namespace std;
 typedef pair<int,int>ii;
 typedef vector<int> vi;
 const ll mod = 1e9 + 7;
-const int len = 448; // ajustar len para problema em questao
+const int len = 448; // ajustar len para problema em questao sqrt(n+.0)+1
 
 struct Query{
     int l, r, id;
@@ -49,7 +49,7 @@ vi resposta(){
             //strutura.remove(cr);
             cr--;
         }
-        ans[x.id] = 0 // strutura.resposta();
+        ans[x.id] = 0; // strutura.resposta();
     }
 
     return ans;
