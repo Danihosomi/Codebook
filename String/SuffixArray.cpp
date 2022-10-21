@@ -61,7 +61,7 @@ vi sortCyclic(string const& c){
 vi BuildSufix(string c){
     c+='$';
     vi suffixArray = sortCyclic(c);
-    suffixArray.erase(suffixArray.begin());
+    //suffixArray.erase(suffixArray.begin()); (Caso vazio conte como substring)
     return suffixArray;
 }
 

@@ -19,8 +19,8 @@ typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
-vi kmp(string c){
-    vi pi(n);
+vi KMP(string c){
+    vi pi(sz(c)); pi[0]=0;
 
     for(int i=1;i<sz(c);i++){
         int j=pi[i-1];
