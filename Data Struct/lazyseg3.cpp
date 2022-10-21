@@ -23,16 +23,16 @@ struct node{
     ll sum, lazy;
 };
 
-int N, Q, V[200005];
+int n, q, v[200005];
 node seg3[4*200005];
 
-ll join(ll A,ll B){
-    return A+B;
+ll join(ll a,ll b){
+    return a+b;
 }
 
 void build(int id,int l,int r){
     if(l==r){
-        seg3[id].sum=V[l];
+        seg3[id].sum=v[l];
         seg3[id].lazy=0;
         return ;
     }
