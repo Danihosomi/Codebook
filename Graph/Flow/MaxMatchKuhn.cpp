@@ -13,7 +13,6 @@ using namespace std;
 #define inf 1e9
 typedef pair<int,int>ii;
 typedef vector<int> vi;
-
 const ll mod = 1e9 + 7;
 
 
@@ -33,7 +32,8 @@ int try_kuhn(int x){
     return 0;
 }
 
-int main(){_
+vector<ii> kuhn(){
+    vector<ii> ans;
 
     mt.assign(k+2,-1);
     used.assign(n+2,0);
@@ -54,9 +54,13 @@ int main(){_
     }
 
     for(int i=1;i<=k;i++){
-        if(mt[i]!=-1)
-            cout<<mt[i]<<' '<<i<<'\n';
+        if(mt[i]!=-1) ans.pb({mt[i],i});
     }
+
+    return ans;
+}
+
+int main(){_
 
     return 0;
 }

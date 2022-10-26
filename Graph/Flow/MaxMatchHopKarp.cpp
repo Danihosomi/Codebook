@@ -1,0 +1,98 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define _ ios_base::sync_with_stdio(0); cin.tie(0);cout.tie(0);
+#define ll long long
+#define pb push_back
+#define sz(x) (int)x.size()
+#define f first
+#define L(x) (x<<1)
+#define R(x) ((x<<1)+1)
+#define s second
+#define lsb(x) ((x)&(-x))
+#define all(x) x.begin(),x.end()
+#define inf 1e9
+typedef pair<int,int>ii;
+typedef vector<int> vi;
+const ll mod = 1e9 + 7;
+
+int nl, nr, m; // número de vértices
+vi v[10005];
+vi parL, parR, dist;
+
+void bfs(){
+    queue<int> q;
+
+    for(int i=1;i<=nl;i++){
+        if(!~parL[i]) q.push(i), dist[i]=0;
+        else dist[i]=-1;
+    }
+
+    while(!q.empty()){
+        int a=q.front(); q.pop();
+
+        for(auto x : v[a]){
+            if(~parR[x] && !~dist[parR[x]]){
+                dist[parR[x]]=dist[a]+1;
+                q.push(parR[x]);
+            }
+        }
+    }
+
+}
+
+int dfs(int a){
+    for(auto x : v[a]){
+        if(!~parR[x]){
+            parL[a]=x; parR[x]=a;
+            return 1;
+        }
+    }
+
+    for(auto x : v[a]){
+        if(dist[parR[x]]==1+dist[a] && dfs(parR[x])){
+            parL[a]=x; parR[x]=a;
+            return 1;
+        }
+    }
+    
+    return 0;
+}
+
+pair<vi,vi> minVertexCover(){
+    vi ansL, ansR;
+
+    for(int i=1;i<=nl;i++){
+        if(!~dist[i]) ansL.pb(i);
+        else if(~parL[i]) ansR.pb(parL[i]);
+    }
+
+    return {ansL,ansR};
+}
+
+vector<ii> hopKarp(){
+    int maxMatch=0, ok;
+    vector<ii> ans;
+    parL.assign(nl+2,-1); parR.assign(nr+2,-1); dist.resize(nl+2);
+
+    while(true){
+        ok=0;
+        bfs();
+        
+        for(int i=1;i<=nl;i++)
+            if(!~parL[i]) ok+=dfs(i);
+
+        if(!ok) break;
+        maxMatch+=ok;
+    }
+
+    for(int i=1;i<=nl;i++) 
+        if(parL[i]!=-1) ans.pb({i,parL[i]});
+
+    return ans;
+}
+int main(){_
+
+
+    return 0;
+
+}
