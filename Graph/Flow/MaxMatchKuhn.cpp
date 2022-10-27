@@ -15,47 +15,56 @@ typedef pair<int,int>ii;
 typedef vector<int> vi;
 const ll mod = 1e9 + 7;
 
+/*
+Algoritmo de Kuhn ultra hiper rapidao
+Tao forte quanto Hopcroft-Karp, apesar da complexidade desse ser em teoria menor
+*/
 
-int n, k;
-vi v[1001], vis, mt, used;
+int nl, nr;
+vi v[1001], vis, ml, mr;
 
-int try_kuhn(int x){
-    if(vis[x]) return 0;
+int dfs(int x){
     vis[x]=1;
 
     for(auto a : v[x]){
-        if(mt[a]==-1 || try_kuhn(mt[a])){
-            mt[a]=x; return 1;
+        if(!vis[a+nl]){
+            vis[a+nl]=1;
+            if(mr[a]==-1 || dfs(mr[a])){
+                ml[x]=a; mr[a]=x; return 1;
+            }
         }
     }
 
     return 0;
 }
 
+pair<vi,vi> minVertexCover(){
+    vi minL, minR;
+
+    for(int i=1;i<=nl+nr;i++) vis[i]=0;
+    for(int i=1;i<=nl;i++) 
+        if(ml[i]==-1) dfs(i);
+
+    for(int i=1;i<=nl;i++) if(!vis[i]) minL.pb(i);
+    for(int i=1;i<=nr;i++) if(vis[i+nl]) minR.pb(i);
+
+    return {minL,minR};
+}
+
 vector<ii> kuhn(){
-    vector<ii> ans;
+    vector<ii> ans; int ok=1;
+    vis.resize(nl+nr+5);
+    ml.assign(nl+2,-1); mr.assign(nr+2,-1);
 
-    mt.assign(k+2,-1);
-    used.assign(n+2,0);
-    for(int i=1;i<=n;i++){
-        for(auto x : v[i]){
-            if(mt[x]==-1){
-                mt[x]=i;
-                used[i]=1;
-                break;
-            }
-        }
+    while(ok){
+        ok=0;
+        for(int i=1;i<=nr;i++) vis[nl+i]=0;
+        for(int i=1;i<=nl;i++)
+            if(ml[i]==-1 && dfs(i)) ok=1;
     }
 
-    for(int i=1;i<=n;i++){
-        if(used[i]) continue;
-        vis.assign(n+2,0);
-        try_kuhn(i);
-    }
-
-    for(int i=1;i<=k;i++){
-        if(mt[i]!=-1) ans.pb({mt[i],i});
-    }
+    for(int i=1;i<=nl;i++)
+        if(ml[i]!=-1) ans.pb({i,ml[i]});
 
     return ans;
 }

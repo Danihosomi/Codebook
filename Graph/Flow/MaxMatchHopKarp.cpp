@@ -57,8 +57,10 @@ int dfs(int a){
     
     return 0;
 }
+// Para fazer minEdgeCover, basta adcionar o grafo reverso Nr->Nl e pegar todos os caras disjuntos (parL==-1 ou parR==-1)
+// Lembrar de atualizar parR quando pegar parL
 
-pair<vi,vi> minVertexCover(){
+pair<vi,vi> minVertexCover(){ // Conjunto tal que para qualquer aresta do grafo, existe um vértice nesse conjunto que pertence a ela
     vi ansL, ansR;
 
     for(int i=1;i<=nl;i++){
