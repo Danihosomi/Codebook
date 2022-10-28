@@ -10,70 +10,117 @@ using namespace std;
 #define s second
 #define lsb(x) ((x)&(-x))
 #define all(x) x.begin(),x.end()
-#define inf 1e9
+#define inf (int)1e9 // Lembrar de atualizar inf caso necessario
 typedef pair<int,int>ii;
 typedef vector<int> vi;
-const ll mod = 1e9 + 7;
+const ll mod = 1e9 + 7; 
 
 struct aresta{
-    int x, y, capa, cost;
+    int to, rev, flow, cap; // para, id da reversa, fluxo, capacidade
+    bool res; // se eh reversa
+    ll cost; // custo da unidade de fluxo
+
+    aresta(int to_, int rev_, int flow_, int cap_, ll cost_, bool res_)
+    : to(to_), rev(rev_), flow(flow_), cap(cap_), res(res_), cost(cost_) {}
 };
 
-int n, dist[1005][1005], tot[1005][1005], ini, fim;
-vi v[1005];
-vector<aresta> ares;
+int n, s, t;
+vi dist, par, parId;
+vector<aresta> v[505];
+priority_queue<ii,vector<ii>,greater<ii>> p;
 
-void spfa(int ini,vi &d,vi &p){
-    d.assign(n+5,inf); d[ini]=0;
-    p.assign(n+5,-1);
-    vi aux(n,0);
-    queue<int> q; q.push(ini);
+vi spfa(){
+    deque<int> d;
+    vi vis(n+2,0);
+    for(int i=0;i<sz(dist);i++) dist[i]=inf;
 
-    while(!q.empty()){
-        int u=q.front(); q.pop();
-        aux[u]=0;
-        for(auto a : v[u]){
-            if(tot[u][a]>0 && d[a]>d[u]+dist[u][a]){
-                d[a]=d[u]+dist[u][a]; p[a]=u;
-                if(!aux[a]){
-                    aux[a]=1;
-                    q.push(a);
-                }
+    dist[s]=0; d.pb(s); vis[s]=1;
+
+    while(!d.empty()){
+        int a=d.front(); d.pop_front(); vis[a]=0;
+
+        for(auto x : v[a]){
+            if (x.flow<x.cap && dist[a]+x.cost<dist[x.to]) {
+                dist[x.to]=dist[a]+x.cost;
+                if (vis[x.to]) continue;
+
+                if (!d.empty() && dist[x.to]>dist[d.front()]) d.push_back(x.to);
+                else d.push_front(x.to);
+                vis[x.to] = true;
             }
         }
     }
+
+    return dist;
 }
 
-int minCostMaxFlow(int qtdFlow){ // Na vdd é min cost de um fluxo de no minimo qtdFlow caso queira maxFlow basta jogar qtdFlow=INF
-    for(auto e : ares){
-        v[e.x].pb(e.y);
-        v[e.y].pb(e.x);
-        dist[e.x][e.y]=e.cost;
-        dist[e.y][e.x]=-e.cost;
-        tot[e.x][e.y]=e.capa;
-    }
-    ll ans=0; int flow=0;
+int dijkstra(vi& pot){
+    for(int i=0;i<sz(dist);i++) dist[i]=inf;
+    dist[s]=0; p.push({0,s});
 
-    vi d, p;
-    while(flow<qtdFlow){
-        spfa(ini,d,p);
-        if(d[fim]==inf) break;
+    while(!p.empty()){
+        int a=p.top().s, d=p.top().f; p.pop();
 
-        int atual=fim, flowAtual=qtdFlow-flow;
-        while(atual!=ini){
-            flowAtual=min(flowAtual,tot[p[atual]][atual]);
-            atual=p[atual];
-        }
-
-        flow+=flowAtual; ans+=flowAtual*d[fim]; atual=fim;
-        while(atual!=ini){
-            tot[p[atual]][atual]-=flowAtual;
-            tot[atual][p[atual]]+=flowAtual;
-            atual=p[atual];
+        if(d>dist[a]) continue;
+        
+        for (int i=0;i<sz(v[a]);i++){
+            aresta x = v[a][i];
+            x.cost+=pot[a]-pot[x.to];
+            if (x.flow<x.cap && dist[a]+x.cost<dist[x.to]) {
+                dist[x.to]=dist[a]+x.cost;
+                p.push({dist[x.to],x.to});
+                parId[x.to] = i, par[x.to]=a;
+            }
         }
     }
 
-    return (flow<qtdFlow ? -1 : ans);
+    return dist[t]<inf;
+}
+
+ii minCostMaxFlow(int qtdFlow){ // Na vdd é min cost de um fluxo de no minimo qtdFlow caso queira maxFlow basta jogar qtdFlow=INF
+    vector<int> pot(n+2,0);
+    par.resize(n+2); parId.resize(n+2); dist.resize(n+2);
+    pot = spfa(); // Posso trocar qual algoritmo de menor caminho eu quero (SPFA cost<0 e Dijkstra cost>0)
+    
+    int totf=0, totcost=0; 
+
+    while(totf<qtdFlow && dijkstra(pot)){
+        for(int i=1;i<=n;i++)
+            if(dist[i]<inf) pot[i]+=dist[i];
+        
+        int mnFlow=qtdFlow-totf, aux=t;
+        while(aux!=s){
+            mnFlow=min(mnFlow,v[par[aux]][parId[aux]].cap-v[par[aux]][parId[aux]].flow);
+            aux=par[aux];
+        }
+
+        totcost+=pot[t]*mnFlow;
+        totf+=mnFlow; aux=t;
+        
+        while(aux!=s){
+            v[par[aux]][parId[aux]].flow += mnFlow;
+            v[aux][v[par[aux]][parId[aux]].rev].flow -= mnFlow;
+            aux = par[aux];
+        }
+    }
+
+    return {totf,totcost};
+}
+
+vector<ii> recover(){
+    vector<ii> ans;
+    for(int i=1;i<=n;i++)
+        for(auto x : v[i])
+            if(x.flow==x.cap && !x.res) ans.pb({i,x.to});
+
+    return ans;
+}
+
+void add(int x,int y,int w,ll cost){
+    aresta a = aresta(y,sz(v[y]),0,w,cost,false);
+    aresta b = aresta(x,sz(v[x]),0,0,-cost,true);
+    v[x].pb(a);
+    v[y].pb(b);
 }
 
 int main(){_
