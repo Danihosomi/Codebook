@@ -20,57 +20,36 @@ const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
 
-int N, tin[100005], tout[100005], timer, Q, up[100005][22], dist[100005];
-vi V[100005];
+int n, tin[100005], tout[100005], timer, up[22][100005], dist[100005];
+vi v[100005];
 
-void dfs(int A,int pai){
-    tin[A]=timer;
-    dist[A]=dist[pai]+1;
-    timer++;
-    up[A][0]=pai;
-    for(int i=1;i<=21;i++)
-        up[A][i]=up[up[A][i-1]][i-1];
+void dfs(int a,int p){
+    timer++; tin[a]=timer; up[0][a]=p; dist[a]=1+dist[p];
+    for(int i=1;i<22;i++) up[i][a]=up[i-1][up[i-1][a]];
 
-    for(auto v : V[A]){
-        if(v==pai) continue;
-        dfs(v,A);
-    }
-    tout[A]=timer;
-    timer++;
-}
-
-bool anc(int A,int B){
-    return (tin[A]<=tin[B] && tout[B]<=tout[A]);
-}
-
-int LCA(int A,int B){
-    if(anc(A,B)) return A;
-    if(anc(B,A)) return B;
-
-    for(int i=20;i>=0;i--){
-        if(!anc(up[A][i],B))
-            A=up[A][i];
+    for(auto x : v[a]){
+        if(x==p) continue;
+        dfs(x,a);
     }
 
-    return up[A][0];
+    timer++; tout[a]=timer;
+}
+
+int anc(int a,int b){
+    return (tin[a]<=tin[b] && tout[b]<=tout[a]);
+}
+
+int lca(int a,int b){
+    if(anc(a,b)) return a;
+    if(anc(b,a)) return b;
+
+    for(int i=21;i>=0;i--)
+        if(!anc(up[i][a],b)) a=up[i][a];
+
+    return up[0][a];
 }
 
 int main(){_
-    cin>>N>>Q;
-
-    for(int i=0;i<N;i++){
-        int A, B; cin>>A>>B;
-        V[A].eb(B);
-        V[B].eb(A);
-    }
-
-    dfs(0,0);
-
-    while(Q--){
-        int A, B;
-        cin>>A>>B;
-        cout<<LCA(A,B)<<'\n';
-    }
 
     return 0;
 }
