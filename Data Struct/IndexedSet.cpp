@@ -25,10 +25,7 @@ const ll mod = 1e9 + 7;
 // find_by_order
 
 int main(){_
-    int t = 1;
-    //cin>>t;
-    while(t--){
-    }
+
 
     return 0;
 

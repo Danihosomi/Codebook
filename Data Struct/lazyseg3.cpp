@@ -23,7 +23,7 @@ struct node{
     ll sum, lazy;
 };
 
-int n, q, v[200005];
+int n, v[200005];
 node seg3[4*200005];
 
 ll join(ll a,ll b){

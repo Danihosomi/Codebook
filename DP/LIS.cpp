@@ -18,26 +18,23 @@ typedef vector<int> vi;
 typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
-int N;
-vector<int> V, P;
-vector<int>::iterator it;
+
+int n;
+vector<int> v;
+
+vi LIS(){
+    vi p;
+
+    for(auto x : v){
+        vi::iterator it=lower_bound(all(p),x);
+        if(it==p.end()) p.pb(x);
+        else (*it)=x;
+    }
+
+    return p;
+}
 
 int main(){_
-    cin>>N;
-
-    for(int i=0;i<N;i++){
-        int A; cin>>A;
-        V.push_back(A);
-    }
-
-    for(int i=0;i<V.size();i++){
-        it=lower_bound(P.begin(),P.end(),V[i]);
-
-        if(it==P.end()) P.push_back(V[i]);
-        else (*it)=V[i];
-    }
-
-    cout<<P.size()<<'\n';
 
     return 0;
 }

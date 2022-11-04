@@ -49,12 +49,6 @@ int query(int l,int r){
 
 int main(){_
 
-    int t = 1;
-    //cin>>t;
-
-    while(t--){
-
-    }
 
     return 0;
 

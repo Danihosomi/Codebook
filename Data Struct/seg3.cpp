@@ -19,7 +19,7 @@ typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
-int N, Q, V[100005];
+int n, v[100005];
 ll seg3[4*100005];
 
 ll join(ll a, ll b){
@@ -28,7 +28,7 @@ ll join(ll a, ll b){
 
 void build(int id,int l,int r){
 	if(l==r){
-		seg3[id]=V[l];
+		seg3[id]=v[l];
 		return;
 	}
 	int meio=(l+r)>>1;
@@ -57,20 +57,6 @@ ll query(int id,int l,int r,int i,int j){
 }
 
 int main(){_
-	cin>>N>>Q;
-
-	for(int i=1;i<=N;i++)
-		cin>>V[i];
-
-	build(1,1,N);
-	while(Q--){
-		int A, B, C;
-		cin>>A>>B>>C;
-		if(A==1)
-			update(1,1,N,B,C);
-		else
-			cout<<query(1,1,N,B,C)<<'\n';
-	}
 
 	return 0;
 }
