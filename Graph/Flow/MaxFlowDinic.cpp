@@ -23,7 +23,7 @@ struct aresta{ // Representa uma aresta
     ll cap, flow;
 };
 
-int n, m, S, T, cont, vis[10005]; // S inicio e T final
+int n, m, S, T, cont; // S inicio e T final
 vector<aresta> e; // Arestas
 vi v[10005], level, ptr;
 queue<int> q;
@@ -82,10 +82,11 @@ void addEdge(int a,int b,ll capa){
     v[b].pb(cont+1);
     cont+=2; 
 }
-
-vector<pair<int, int>> get_cut() {
+// Min Vertex Cut - basta criar 2 vértices, um de entrada e outro de saida para cada vértice
+// Após isso basta rodar o mincut
+vector<pair<int, int>> getCut() { // Min-Cut Edge
 	vector<pair<int, int>> cut;
-	vector<int> st = {S};
+	vector<int> st = {S}, vis(n+2,0);
 	vis[S] = 1;
 	while (st.size()) {
 		int u = st.back(); st.pop_back();

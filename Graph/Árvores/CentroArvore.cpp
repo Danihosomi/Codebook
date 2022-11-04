@@ -19,52 +19,41 @@ typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
-int N, M, vis[100005], K, pai[100005];
-vi V[100005];
-queue<int>Q;
+int n, vis[100005], pai[100005];
+vi v[100005];
+queue<int>q;
 
-int bfs(int A){
-    for(int i=0;i<=N;i++)
-        vis[i]=pai[i]=-1;
+int bfs(int ini){
+    for(int i=0;i<=n;i++) vis[i]=pai[i]=-1;
     
-    Q.push(A);
-    vis[A]=0;
-    while(!Q.empty()){
-        A=Q.front(); Q.pop();
-        for(auto v : V[A]){
-            if(vis[v]!=-1)  continue;
-            vis[v]=1+vis[A];
-            pai[v]=A;
-            Q.push(v);
+    q.push(ini); vis[ini]=0;
+    while(!q.empty()){
+        int a=q.front(); q.pop();
+        for(auto x : v[a]){
+            if(vis[x]!=-1)  continue;
+            vis[x]=1+vis[a]; pai[x]=a;
+            q.push(x);
         }
     }
-  
-    return A;
+
+    int maior=0, id=0;
+    for(int i=1;i<=n;i++)
+        if(maior<vis[i]) maior=vis[i], id=i;
+
+    return id;
 }
 
 int centro(){
-    int ans, X;
-    X=ans=bfs(bfs(1));
+    int ans, x;
+    x=ans=bfs(bfs(1));
 
-    while(vis[ans]>vis[X]/2)
-        ans=pai[ans];
+    while(vis[ans]>vis[x]/2) ans=pai[ans];
 
     return ans;
 }
 
 int main(){_
-    cin>>N;
 
-    K=N-1;
-
-    while(K--){
-        int A, B;
-        cin>>A>>B;
-        V[A].eb(B);
-        V[B].eb(A);
-    }
-    
-    cout<<centro()<<'\n';
 
     return 0;
 }
