@@ -107,7 +107,7 @@ void update_subtree(int a, int x) {
     update(1,1,t,pos[a], pos[a]+tam[a]-1, x);
 }
 
-int lca(int a, int b) {
+int lca(int a, int b) { // Lento
     if (pos[a] < pos[b]) swap(a, b);
     return h[a] == h[b] ? b : lca(pai[h[a]], b);
 }

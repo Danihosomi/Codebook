@@ -25,7 +25,7 @@ vi v[200005];
 void build(int a,int p=1){
     tam[a]=1;
     for(auto &x : v[a]){
-        if(x==p) continue;
+        if(x==p) continue; // Cuidado com pais, as vezes pode da bosta na hora de calcular
         build(x,a); tam[a]+=tam[x];
         if(tam[x]>tam[v[a][0]]) swap(x,v[a][0]);
     }

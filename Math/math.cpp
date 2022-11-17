@@ -21,14 +21,11 @@ const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
 
-ll binpow(ll A,ll E){
+ll binpow(ll a,ll e){
     ll ans = 1;
-    while(E){
-        if(E&1) 
-			ans=(ans*A)%mod;
-        
-		A=(A*A)%mod;
-        E>>=1;
+    while(e){
+        if(e&1) ans=(ans*a)%mod;
+		a=(a*a)%mod; e>>=1;
     }
     return ans;
 }

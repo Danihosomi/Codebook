@@ -34,7 +34,7 @@ ll bfs(){
         atual=Q.front().f; flow=Q.front().s;
         Q.pop();
         for(auto v : V[atual]){
-            if(pai[v]==-1 && capacity[atual][v]){
+            if(pai[v]==-1 && capacity[atual][v]>0){
                 pai[v]=atual;
                 new_flow=min(flow,capacity[atual][v]);
                 if(v==T)
