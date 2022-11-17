@@ -1,29 +1,29 @@
 #include <bits/stdc++.h>
-#define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define lsb(x) ((x)&(-x))
+using namespace std;
+#define _ ios_base::sync_with_stdio(0); cin.tie(0);cout.tie(0);
+#define ll long long
+#define pb push_back
+#define sz(x) (int)x.size()
+#define all(x) x.begin(),x.end()
 #define f first
 #define s second
-#define R(x) ((x<<1)+1)
 #define L(x) (x<<1)
-#define pb push_back
-#define ii pair<int,int>
-#define INF 1e9+1
-#define BUG(x) cout<<x<<endl;
-#define bug cout<<"oi"<<endl;
-#define all(x) x.begin(),x.end()
-#define sz(x) (int)x.size()
-using namespace std;
+#define R(x) ((x<<1)+1)
+#define lsb(x) ((x)&(-x))
+#define inf (int)1e9
+#define linf (ll)1e17
+typedef pair<int,int>ii;
 typedef vector<int> vi;
-typedef long long ll;
-const ll mod=1e9+7;
-//freopen("1.txt", "r", stdin);
+const ll mod = 1e9 + 7;
 
+
+// Ta td cagado
 struct aresta{ // Representa uma aresta
     int a, b;
     ll cap, flow;
 };
 
-int n, m, S, T, cont; // S inicio e T final
+int n, m, S, T, cont, dist[10005]; // S inicio e T final
 vector<aresta> e; // Arestas
 vi v[10005], level, ptr;
 
@@ -65,31 +65,36 @@ ll dinic(int ini,int fim){
     return ans;
 }
 
-void addEdge(int a,int b,ll capa){
-    e.pb({a,b,capa}); e.pb({b,a,0});
+void add(int a,int b,ll maxcap){
+    e.pb({a,b,maxcap}); e.pb({b,a,0});
     v[a].pb(cont); v[b].pb(cont+1);
     cont+=2; 
 }
-// Min Vertex Cut - basta criar 2 vértices, um de entrada e outro de saida para cada vértice
-// Após isso basta rodar o mincut
-vector<pair<int, int>> getCut() { // Min-Cut Edge
-	vector<pair<int, int>> cut;
-	vector<int> st = {S}, vis(n+2,0);
-	vis[S] = 1;
-	while (st.size()) {
-		int u = st.back(); st.pop_back();
-		for (auto x : v[u]){ 
-            aresta k=e[x];
-            if (!vis[k.b] && k.flow < k.cap) vis[k.b] = 1, st.push_back(k.b);
-        }
+
+void addEdge(int a,int b,ll mincap,ll maxcap){
+    dist[a]-=mincap; dist[b]+=mincap;
+    e.pb({a,b,maxcap}); e.pb({b,a,0});
+    v[a].pb(cont); v[b].pb(cont+1);
+    cont+=2; 
+}
+
+int hasCirc(){
+    ll cost=0;
+
+    for(int i=1;i<=n;i++){
+        if(dist[i]>0) cost+=dist[i], add(n+1,n,-dist[i]);;
+        else add(i,n+1,-dist[i]);
     }
-	for (int i = 1; i <=n; i++) 
-        for (auto x : v[i]){ 
-            aresta k=e[x];
-            if (vis[i] && !vis[k.b] && !(x%2)) cut.emplace_back(i, k.b);
-        }
-    
-	return cut;
+
+}
+
+int hasFlow(int ini,int fim){
+    add(fim,ini,inf); return hasCirc();
+}
+
+ll maxFlox(int ini,int fim){
+    if(!hasFlow(ini,fim)) return -1;
+    return dinic(ini,fim);
 }
 
 int main(){_

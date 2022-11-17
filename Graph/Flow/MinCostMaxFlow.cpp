@@ -24,17 +24,15 @@ struct aresta{
     : to(to_), rev(rev_), flow(flow_), cap(cap_), res(res_), cost(cost_) {}
 };
 
-int n, s, t;
+int n, S, T;
 vi dist, par, parId;
 vector<aresta> v[505];
 priority_queue<ii,vector<ii>,greater<ii>> p;
 
 vi spfa(){
-    deque<int> d;
-    vi vis(n+2,0);
+    deque<int> d; vi vis(n+2,0);
     for(int i=0;i<sz(dist);i++) dist[i]=inf;
-
-    dist[s]=0; d.pb(s); vis[s]=1;
+    dist[S]=0; d.pb(S); vis[S]=1;
 
     while(!d.empty()){
         int a=d.front(); d.pop_front(); vis[a]=0;
@@ -56,7 +54,7 @@ vi spfa(){
 
 int dijkstra(vi& pot){
     for(int i=0;i<sz(dist);i++) dist[i]=inf;
-    dist[s]=0; p.push({0,s});
+    dist[S]=0; p.push({0,S});
 
     while(!p.empty()){
         int a=p.top().s, d=p.top().f; p.pop();
@@ -67,14 +65,13 @@ int dijkstra(vi& pot){
             aresta x = v[a][i];
             x.cost+=pot[a]-pot[x.to];
             if (x.flow<x.cap && dist[a]+x.cost<dist[x.to]) {
-                dist[x.to]=dist[a]+x.cost;
-                p.push({dist[x.to],x.to});
+                dist[x.to]=dist[a]+x.cost; p.push({dist[x.to],x.to});
                 parId[x.to] = i, par[x.to]=a;
             }
         }
     }
 
-    return dist[t]<inf;
+    return dist[T]<inf;
 }
 
 ii minCostMaxFlow(int qtdFlow){ // Na vdd é min cost de um fluxo de no minimo qtdFlow caso queira maxFlow basta jogar qtdFlow=INF
@@ -88,16 +85,14 @@ ii minCostMaxFlow(int qtdFlow){ // Na vdd é min cost de um fluxo de no minimo q
         for(int i=1;i<=n;i++)
             if(dist[i]<inf) pot[i]+=dist[i];
         
-        int mnFlow=qtdFlow-totf, aux=t;
-        while(aux!=s){
-            mnFlow=min(mnFlow,v[par[aux]][parId[aux]].cap-v[par[aux]][parId[aux]].flow);
-            aux=par[aux];
+        int mnFlow=qtdFlow-totf, aux=T;
+        while(aux!=S){
+            mnFlow=min(mnFlow,v[par[aux]][parId[aux]].cap-v[par[aux]][parId[aux]].flow); aux=par[aux];
         }
 
-        totcost+=pot[t]*mnFlow;
-        totf+=mnFlow; aux=t;
+        totcost+=pot[T]*mnFlow; totf+=mnFlow; aux=T;
         
-        while(aux!=s){
+        while(aux!=S){
             v[par[aux]][parId[aux]].flow += mnFlow;
             v[aux][v[par[aux]][parId[aux]].rev].flow -= mnFlow;
             aux = par[aux];
@@ -119,8 +114,7 @@ vector<ii> recover(){
 void add(int x,int y,int w,ll cost){
     aresta a = aresta(y,sz(v[y]),0,w,cost,false);
     aresta b = aresta(x,sz(v[x]),0,0,-cost,true);
-    v[x].pb(a);
-    v[y].pb(b);
+    v[x].pb(a); v[y].pb(b);
 }
 
 int main(){_
