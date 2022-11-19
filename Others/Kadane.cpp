@@ -16,7 +16,7 @@ typedef vector<int> vi;
 
 const ll mod = 1e9 + 7;
 
-ll kadane(vector<ll> v){
+ll kadane(vector<ll>& v){
     ll ans=0, sum=0;
 
     for(auto x : v){
