@@ -19,8 +19,8 @@ typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
 
-int n;
-vector<int> v;
+vector<int> v; // O(nlogn) com Busca Binaria
+// Da para fazer O(nlogn) com Segment Tree (Mais versátil)
 
 vi LIS(){
     vi p;
