@@ -74,6 +74,11 @@ bool inter(long long a, long long b, long long c, long long d) {
     return max(a, c) <= min(b, d);
 }
 
+int pointLineIntersec(pt a,pt b, pt c){ // se c interecta ab : 1 se sim, 0 se não
+	if(((b-a)^(c-a))!=0) return 0;	
+	return (min(a.x, b.x) <=c.x && c.x <= max(a.x, b.x)) && (min(a.y, b.y) <=c.y &&c.y <= max(a.y, b.y));
+}
+
 bool checkInter(pt a, pt b, pt c, pt d) {
     if (((a-c)^(d-c))==0 && ((b-c)^(d-c))==0)
         return (inter(a.x, b.x, c.x, d.x) && inter(a.y, b.y, c.y, d.y));
@@ -226,6 +231,21 @@ double minimumDist(vector<pt> v){
 
     return ans;
 }
+
+int pointPolygon(pt a,vector<pt> v){ // Qualquer Poligono O(n)
+	int cnt=0, bound=0;
+
+	for(int i=0;i<sz(v);i++){
+		int j=(i==sz(v)-1 ? 0 : i+1);
+		if(pointLineIntersec(v[i],v[j],a)) bound=1;
+        if((v[i].x<=a.x && a.x<v[j].x) && ((v[i]-a)^(v[j]-a))<0) cnt++;
+		else if((v[j].x<=a.x && a.x<v[i].x) && ((v[j]-a)^(v[i]-a))<0) cnt++;
+	}
+
+	if(bound) return -1;
+	return (cnt&1); // 1 -> dentro / 0 -> fora
+}
+
  
 int main(){_
 

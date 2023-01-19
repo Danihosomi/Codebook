@@ -1,83 +1,60 @@
 #include <bits/stdc++.h>
+using namespace std;
 #define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define lsb(x) ((x)&(-x))
+#define ll long long
+#define pb push_back
+#define sz(x) (int)x.size()
+#define all(x) x.begin(),x.end()
 #define f first
 #define s second
-#define R(x) ((x<<1)+1)
 #define L(x) (x<<1)
-#define pb(x) push_back(x)
-#define eb(x) emplace_back(x)
-#define ii pair<int,int>
-#define INF 1e9+1
-#define BUG(x) cout<<x<<endl;
-#define bug cout<<"oi"<<endl;
-#define all(x) x.begin(),x.end()
-#define sz(x) (long long)x.size()
-using namespace std;
+#define R(x) ((x<<1)+1)
+#define lsb(x) ((x)&(-x))
+#define inf (int)1e9
+#define linf (ll)1e17
+typedef pair<int,int> ii;
 typedef vector<int> vi;
-typedef long long ll;
-const ll mod=1e9+7;
-//freopen("1.txt", "r", stdin);
+const ll mod = 1e9 + 7;
 
-struct aresta{
-    int X, Y;
-};
+int n, m, vis[200005], qtd;
+vi v[200005], rv[200005], g[200005], o;
+vector<ii> e;
 
-int N, M, vis[1000001], cont, qtd[1000001];
-vector<int> V[1000001], R[1000001], O;
-vector< aresta > T;
-
-void dfs(int A){
-    vis[A]=1;
-    for(auto v : V[A]){
-        if(vis[v]) continue;
-        dfs(v);
+void dfs1(int a){
+    vis[a]=1;
+    for(auto x : v[a]){
+        if(vis[x]) continue;
+        dfs1(x);
     }
-    O.emplace_back(A);
+    o.pb(a);
 }
 
-void dfs1(int A,int B){
-    vis[A]=B;
-    qtd[B]++;
-    for(auto v : R[A]){
-        if(vis[v]) continue;
-        dfs1(v,B);
+void dfs2(int a){
+    vis[a]=qtd;
+    for(auto x : rv[a]){
+        if(vis[x]) continue;
+        dfs2(x);
+    }
+}
+
+void kosaraju(){
+    for(int i=1;i<=n;i++) if(!vis[i]) dfs1(i);
+    for(int i=1;i<=n;i++) vis[i]=0;
+    for(int i=sz(o)-1;i>=0;i--) if(!vis[o[i]]){ qtd++; dfs2(o[i]); }
+
+    for(auto x : e)
+        if(vis[x.f]!=vis[x.s]) g[vis[x.f]].pb(vis[x.s]);
+}
+
+void entrada(){
+    for(int i=1;i<=m;i++){
+        int a, b; cin>>a>>b;
+        v[a].pb(b); rv[b].pb(a); e.pb({a,b});
     }
 }
 
 int main(){_
-    cin>>N>>M;
 
-    while(M--){
-        int A, B;
-        cin>>A>>B;
-        V[A].eb(B);
-        R[B].eb(A);
-        T.push_back({A,B});
-    }
-
-    for(int i=1;i<=N;i++)
-        if(!vis[i])
-            dfs(i);
-    
-    for(int i=1;i<=N;i++){
-        vis[i]=0;
-        V[i].clear();
-    }
-
-    for(int i=O.size()-1;i>=0;i--){
-        if(!vis[O[i]]){
-            cont++;
-            dfs1(O[i],cont);
-        }
-    }
-
-    for(auto t : T){
-        if(vis[t.X]!=vis[t.Y])
-            V[vis[t.X]].emplace_back(vis[t.Y]);
-    }
-    
-    cout<<cont<<'\n';
 
 	return 0;
 }
