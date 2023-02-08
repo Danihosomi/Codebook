@@ -84,7 +84,7 @@ namespace LCP{
     }
 
     int query(int l,int r){
-        return min(st[lg[r-l]][l],st[lg[r-l]][r-(1<<lg[r-l])+1]);
+        return min(st[lg[r-1-l]][l],st[lg[r-1-l]][r-1-(1<<lg[r-1-l])+1]);
     }
 };
 
