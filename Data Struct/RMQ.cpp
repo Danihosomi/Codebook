@@ -11,12 +11,12 @@ using namespace std;
 #define lsb(x) ((x)&(-x))
 #define all(x) x.begin(),x.end()
 #define inf 1e9
-#define MAXL 25
 typedef pair<int,int>ii;
 typedef vector<int> vi;
 const ll mod = 1e9 + 7;
 
 namespace RMQ{
+    const int MAXL = 16;
     int st[MAXL][500005], lg[500005], n;
 
     void build(const vi v){
