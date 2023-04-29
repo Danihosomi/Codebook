@@ -49,6 +49,13 @@ int lca(int a,int b){
     return up[0][a];
 }
 
+int upK(int a,int b){
+    for(int i=21;i>=0;i--)
+        if(b>=(1<<i)) b-=(1<<i), a=up[i][a];
+
+    return a;
+}
+
 int main(){_
 
     return 0;

@@ -25,7 +25,7 @@ struct aresta{ // Representa uma aresta
 
 int n, m, S, T, cont; // S inicio e T final
 vector<aresta> e; // Arestas
-vi v[10005], level, ptr;
+vi v[5015], level, ptr;
 
 int bfs(){
     queue<int> q; fill(all(level),-1); level[S]=0; q.push(S);
@@ -42,11 +42,11 @@ int bfs(){
 ll dfs(int x,ll push){
     if(!push || x==T) return push;
 
-    for(int i=ptr[x];i<sz(v[x]);i++){
+    for(int &i=ptr[x];i<sz(v[x]);i++){
         int id=v[x][i], u=e[id].b;
         if((level[x]+1!=level[u]) || (e[id].cap-e[id].flow<1)) continue;
 
-        ll tr=dfs(u,min(push,e[id].cap-e[id].flow)); if(tr==0) continue;
+        ll tr=dfs(u,min(push,e[id].cap-e[id].flow)); if(tr<=0) continue;
         e[id].flow+=tr; e[id^1].flow-=tr;
         return tr;
     }
@@ -55,18 +55,17 @@ ll dfs(int x,ll push){
 }
 
 ll dinic(int ini,int fim){
-    S=ini; T=fim; ll ans=0; level.resize(n+2); ptr.resize(n+2);
+    S=ini; T=fim; ll ans=0; level.resize(n+1); ptr.resize(n+1);
 
-    while(true){
-        if(!bfs()) break;
-        fill(all(ptr),0); while(ll push=dfs(S,(ll)1e18)) ans+=push;
+    while(bfs()){
+        fill(all(ptr),0); while(ll push=dfs(S,(ll)1e17)) ans+=push;
     }
 
     return ans;
 }
 
 void addEdge(int a,int b,ll capa){
-    e.pb({a,b,capa}); e.pb({b,a,0});
+    e.pb({a,b,capa}); e.pb({b,a,0}); // Se for biderecional cap(b,a)= capa
     v[a].pb(cont); v[b].pb(cont+1);
     cont+=2; 
 }

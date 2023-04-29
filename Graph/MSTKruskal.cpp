@@ -18,62 +18,53 @@ typedef vector<int> vi;
 typedef long long ll;
 const ll mod=1e9+7;
 //freopen("1.txt", "r", stdin);
- 
+
 struct aresta{
-    int X, Y;
-    ll W;
+        int x, y;
+        ll w;
 };
- 
-int N, M, pai[200005], qtd[200005];
-ll ans;
-vector< aresta > V;
 
-bool comp(aresta A,aresta B){
-    return A.W<B.W;
+bool comp(aresta a,aresta b){
+    return a.w<b.w;
 }
 
-int func(int A){
-    if(A==pai[A])
-        return A;
-    return pai[A]=func(pai[A]);
-}
- 
-void join(int A,int B){
-    A=func(A);
-    B=func(B);
-    if(A==B)
-        return;
- 
-    if(qtd[A]<qtd[B]) swap (A,B);
- 
-    qtd[A]+=qtd[B];
-    pai[B]=A;
-    return;
-}
- 
+namespace Kruskal{
+    int n, pai[200005], qtd[200005];
+    vector< aresta > e;
+
+    void build(int n1){
+        n=n1; for(int i=0;i<=n+1;i++) pai[i]=i, qtd[i]=1;
+    }
+
+    void add(aresta a){
+        e.pb(a);
+    }
+
+    int acha(int x){
+        return (x==pai[x] ? x : pai[x]=acha(pai[x]));
+    }
+
+    void join(int a,int b){
+        a=acha(a); b=acha(b);
+        if(a==b) return;
+        if(qtd[a]<qtd[b]) swap(a,b);
+        qtd[a]+=qtd[b]; pai[b]=a;
+    }
+
+    ll solve(){
+        ll ans=0; sort(all(e),comp);
+        for(auto a : e)
+            if(acha(a.x)!=acha(a.y)){
+                join(a.x,a.y); ans+=a.w;
+            }
+        
+
+        return ans;
+    }
+};
+
 int main(){_
-    cin>>N>>M;
 
-    for(int i=1;i<=N;i++){
-        qtd[i]=1; pai[i]=i;
-    }
-
-    while(M--){
-        int A, B, C;
-        cin>>A>>B>>C;
-        V.push_back({A,B,C});
-    }
-    
-    sort(V.begin(),V.end(),comp);
-
-    for(auto v : V){
-        if(func(v.X)!=func(v.Y)){
-            join(v.X,v.Y);
-            ans+=v.W;
-        }
-    }
-    
-    cout<<ans<<'\n';
 
     return 0;
 }
