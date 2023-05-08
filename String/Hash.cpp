@@ -1,42 +1,30 @@
-#include <bits/stdc++.h>
-#define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define lsb(x) ((x)&(-x))
-#define f first
-#define s second
-#define R(x) ((x<<1)+1)
-#define L(x) (x<<1)
-#define pb(x) push_back(x)
-#define eb(x) emplace_back(x)
-#define ii pair<int,int>
-#define INF 1e9+1
-#define BUG(x) cout<<x<<endl;
-#define bug cout<<"oi"<<endl;
-#define all(x) x.begin(),x.end()
-#define sz(x) (long long)x.size()
-using namespace std;
-typedef vector<int> vi;
-typedef long long ll;
-const ll mod=1e9+7;
-//freopen("1.txt", "r", stdin);
+// Hash 1 indexado
+namespace Hash{
+    const int p = 31; // Colocar 53 se tiver minusculo e maiusculo
+    const ll m = 1e9+9;
+    ll powP[(int)1e6+1], invP[(int)1e6+1];
 
-string S1;
-ll H1[200005], P[200005];
+    ll inv_mod(ll a,ll b){
+        return (a > 1 ? b-inv_mod(b%a, a)*b/a : 1);
+    }
 
-void pre(){
-    memset(H1,0,sizeof(H1)); memset(P,0,sizeof(P));
-    ll A=33; P[0]=1; 
-    for(int i=1;i<=sz(S1);i++)
-        P[i]=(A*P[i-1])%mod;
-    
-    for(int i=1;i<=sz(S1);i++)
-        H1[i]=(A*H1[i-1]+(S1[i-1]-'a')+1)%mod;
-}
+    void init(){
+        powP[0] = 1; invP[0] = inv_mod(1,m);
+        for(int i=1;i<=(int)1e6;i++){ 
+            powP[i] = (p*powP[i-1])%m;
+            invP[i] = inv_mod(powP[i],m);
+        }
+    }
 
-ll hash1(int l,int r){
-    return (H1[r]-(H1[l-1]*P[r-l+1])%mod+mod)%mod;
-}
+    vector<ll> makeHash(string const& c){ // Constroi o vetor dos Hash
+        vector<ll> hashValue(sz(c)+1,0);
+        
+        for(int i=1;i<=sz(c);i++) hashValue[i] = (hashValue[i-1]+powP[i-1]*(c[i-1]-'a'+1))%m;
 
-int main(){_
+        return hashValue;
+    }
 
-    return 0;
-}
+    ll getHash(vector<ll>& hashValue,int l,int r){ // Te retorna o valor de um Hash
+        return ((hashValue[r]-hashValue[l-1]+m)*invP[l-1])%m;
+    }
+};

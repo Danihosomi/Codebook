@@ -1,23 +1,4 @@
-#include <bits/stdc++.h>
-using namespace std;
-#define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define ll long long
-#define pb push_back
-#define sz(x) (int)x.size()
-#define all(x) x.begin(),x.end()
-#define f first
-#define s second
-#define L(x) (x<<1)
-#define R(x) ((x<<1)+1)
-#define lsb(x) ((x)&(-x))
-#define inf (int)1e9
-#define linf (ll)1e17
-typedef pair<int,int> ii;
-typedef vector<int> vi;
-const ll mod = 1e9 + 7;
-
 // Knuth Optimization: O(N^3) => O(N^2)
-
 int n;
 ll C[5005][5005], opt[5005][5005], dp[5005][5005], v[5005];
 
@@ -44,10 +25,4 @@ ll solve(){
     }
 
     return dp[1][n];
-}
-
-int main(){_
-
-
-    return 0;
 }

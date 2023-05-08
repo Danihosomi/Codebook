@@ -1,22 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-#define _ ios_base::sync_with_stdio(0); cin.tie(0);cout.tie(0);
-#define ll long long
-#define pb push_back
-#define sz(x) (int)x.size()
-#define all(x) x.begin(),x.end()
-#define f first
-#define s second
-#define L(x) (x<<1)
-#define R(x) ((x<<1)+1)
-#define lsb(x) ((x)&(-x))
-#define inf (int)1e9
-#define linf (ll)1e17
-typedef pair<int,int>ii;
-typedef vector<int> vi;
-const ll mod = 1e9 + 7;
-
-
 // Ta td cagado
 struct aresta{ // Representa uma aresta
     int a, b;
@@ -95,9 +76,4 @@ int hasFlow(int ini,int fim){
 ll maxFlox(int ini,int fim){
     if(!hasFlow(ini,fim)) return -1;
     return dinic(ini,fim);
-}
-
-int main(){_
-
-    return 0;
 }

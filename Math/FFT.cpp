@@ -1,19 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-#define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define pb push_back
-#define sz(x) (int)x.size()
-#define all(x) x.begin(),x.end()
-#define f first
-#define s second
-#define lsb(x) ((x)&(-x))
-typedef long long ll;
-typedef pair<int,int> ii;
-typedef vector<int> vi;
-const ll mod = 1e9 + 7;
-const int inf = (int)1e9;
-const ll linf = (ll)1e17;
-
 // Totalmente copiado da KCTl
 // O(n*log(n)) FFT - Transformation
 // compila com esse comando :g++ -std=c++17 a.cpp -o a
@@ -117,10 +101,4 @@ vl trivialMul(const vl &a, const vl &b){
     }
 
     return res;
-}
-
-int main(){_
-
-
-    return 0;
 }

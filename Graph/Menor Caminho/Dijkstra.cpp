@@ -1,60 +1,22 @@
-#include <bits/stdc++.h>
-#define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define lsb(x) ((x)&(-x))
-#define f first
-#define s second
-#define R(x) ((x<<1)+1)
-#define L(x) (x<<1)
-#define pb(x) push_back(x)
-#define eb(x) emplace_back(x)
-#define ii pair<int,int>
-#define INF 1e9+1
-#define MAXN (int)2e5
-#define BUG(x) cout<<x<<endl;
-#define bug cout<<"oi"<<endl;
-#define all(x) x.begin(),x.end()
-#define sz(x) (long long)x.size()
-using namespace std;
-typedef vector<int> vi;
-typedef long long ll;
-const ll mod=1e9+7;
-//freopen("1.txt", "r", stdin);
-
-int N, M, ini;
+int n, m;
 ll dist[MAXN];
-vector< ii > V[MAXN];
-priority_queue<ii, vector<ii>, greater<ii> > P;
+vector< ii > v[MAXN];
+priority_queue<ii, vector<ii>, greater<ii> > p;
 
-void dijkstra(){
-    for(int i=0;i<=N;i++)
-        dist[i]=INF;
-    dist[ini]=0;
-    P.push({0,ini});
-    while(!P.empty()){
-        int A; ll D;
-        A=P.top().s;
-        D=P.top().f;
-        P.pop();
-        if(D>dist[A]) continue;
-        for(auto v : V[A]){
-            if(dist[v.f]>v.s+dist[A]){
-                dist[v.f]=v.s+dist[A];
-                P.push({dist[v.f],v.f});
+void dijkstra(int ini){
+    for(int i=0;i<=n;i++) dist[i]=linf;
+    
+    dist[ini]=0; p.push({0,ini});
+    while(!p.empty()){
+        int a; ll d;
+        a=p.top().s; d=p.top().f; p.pop();
+        
+        if(d>dist[a]) continue;
+        for(auto x : v[a]){
+            if(dist[x.f]>x.s+dist[a]){
+                dist[x.f]=x.s+dist[a];
+                p.push({dist[x.f],x.f});
             }
         }
     }
-}
-
-int main(){_
-    cin>>N>>M>>ini;
-
-    while(M--){
-        int A, B, C; cin>>A>>B>>C;
-        V[A].push_back({B,C});
-        V[B].push_back({A,C});
-    }
-
-    dijkstra();
-
-    return 0;
 }

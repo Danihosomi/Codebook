@@ -1,20 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-#define _ ios_base::sync_with_stdio(0); cin.tie(0);cout.tie(0);
-#define ll long long
-#define pb push_back
-#define sz(x) (int)x.size()
-#define f first
-#define L(x) (x<<1)
-#define R(x) ((x<<1)+1)
-#define s second
-#define lsb(x) ((x)&(-x))
-#define all(x) x.begin(),x.end()
-#define inf 1e9
-typedef pair<int,int>ii;
-typedef vector<int> vi;
-const ll mod = 1e9 + 7;
-
 int n, tin[200005], tout[200005], t, up[22][200005], mup[22][200005];
 vector<ii> v[200005];
 
@@ -58,11 +41,4 @@ int getBig(int a,int b){
     if(c==b) return got(a,b);
 
     return max(got(a,c),got(b,c));
-}
-
-int main(){_
-
-
-    return 0;
-
 }

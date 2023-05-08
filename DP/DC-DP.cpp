@@ -1,21 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-#define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define ll long long
-#define pb push_back
-#define sz(x) (int)x.size()
-#define all(x) x.begin(),x.end()
-#define f first
-#define s second
-#define L(x) (x<<1)
-#define R(x) ((x<<1)+1)
-#define lsb(x) ((x)&(-x))
-#define inf (int)1e9
-#define linf (ll)1e17
-typedef pair<int,int> ii;
-typedef vector<int> vi;
-const ll mod = 1e9 + 7;
-
 // Divide and Conquer - DP
 // O(k*n^2) -> O(k*n*log(n))
 //  
@@ -23,8 +5,6 @@ const ll mod = 1e9 + 7;
 // dp[i][j] = 0 para j<0
 // C[k][j] é uma função de custo 
 // 
-
-
 int n, k;
 ll dp[2][50005], C[5005][5005];
 
@@ -60,15 +40,4 @@ ll ans(){
     }
 
     return dp[0][n];
-}
-
-int main(){_
-
-    int t = 1;
-    //cin>>t;
-    while(t--){
-
-    }
-
-    return 0;
 }
