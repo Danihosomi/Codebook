@@ -21,7 +21,7 @@ int dfs(int x){
     return 0;
 }
 
-pair<vi,vi> minVertexCover(){
+pair<vi,vi> minVertexCover(){ // É um conjunto de vértices que contém pelo menos uma das pontas de cada aresta
     vi minL, minR;
 
     for(int i=1;i<=nl+nr;i++) vis[i]=0;

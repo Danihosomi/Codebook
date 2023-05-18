@@ -6,14 +6,14 @@ using namespace std;
 #define all(x) x.begin(),x.end()
 #define f first
 #define s second
-#define L(x) (x<<1)
-#define R(x) ((x<<1)+1)
-#define lsb(x) ((x)&(-x))
+#define L(x) (x<<1) // Para seg3
+#define R(x) ((x<<1)+1) // Para seg3
+#define lsb(x) ((x)&(-x)) // Para BIT e manipulações
 typedef long long ll;
 typedef pair<int,int> ii;
 typedef vector<int> vi;
 const int inf = (int)1e9;
-const ll mod = 1e9 + 7;
+const ll mod = (ll)1e9 + 7;
 const ll linf = (ll)1e17;
 
 
