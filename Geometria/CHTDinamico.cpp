@@ -5,7 +5,7 @@
 //
 
 struct Line {
-	mutable ll k, m, p; // y = k*x+m
+	mutable ll k, m, p; // y = k*x+m e p é o ponto de intersecção com a próxima reta
 	bool operator < (const Line& o) const { return k < o.k; }
 	bool operator < (ll x) const { return p < x; }
 };
@@ -16,7 +16,7 @@ struct CHT : multiset<Line, less<>> {
 	static const ll MAXLL = linf;
 	ll div(ll a, ll b) { return a / b - ((a ^ b) < 0 && a % b); } // floored division
 
-	bool isect(iterator x, iterator y) {
+	bool isect(iterator x, iterator y) { // checa se uma reta é inutil
 		if (y == end()) return x->p = MAXLL, 0;
 		if (x->k == y->k) x->p = x->m > y->m ? MAXLL : -MAXLL;
 		else x->p = div(y->m - x->m, x->k - y->k);

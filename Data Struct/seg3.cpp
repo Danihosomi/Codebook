@@ -8,7 +8,7 @@ ll join(ll a, ll b){
 	return a+b;
 }
 
-void build(int id=1,int l=1,int r=n){
+void build(int id,int l,int r){
 	if(l==r){
 		seg3[id]=v[l];
 		return;
@@ -19,7 +19,7 @@ void build(int id=1,int l=1,int r=n){
 	seg3[id]=join(seg3[L(id)],seg3[R(id)]);
 }
 
-void update(int id=1,int l=1,int r=n,int i,int val){
+void update(int id,int l,int r,int i,int val){
 	if(l==r && l==i){
 		seg3[id]+=val;
 		return;
@@ -31,7 +31,7 @@ void update(int id=1,int l=1,int r=n,int i,int val){
 	seg3[id]=join(seg3[L(id)],seg3[R(id)]);
 }
 
-ll query(int id=1,int l=1,int r=n,int i,int j){
+ll query(int id,int l,int r,int i,int j){
 	if(i<=l && r<=j) return seg3[id];
 	if(r<i || j<l) return 0;
 	int meio=(l+r)>>1;
