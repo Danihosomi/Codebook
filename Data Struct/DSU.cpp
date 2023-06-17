@@ -50,3 +50,30 @@ namespace DSU{
         qtd[a]+=qtd[b]; pai[b]=a;
     }
 };
+
+
+//
+// DSU para coisas bipartidas
+//
+namespace BipartiteDSU{
+    int n, pai[200005], qtd[200005], len[200005];
+
+    void build(int n1){
+        n=n1; for(int i=0;i<=n+1;i++) pai[i]=i, qtd[i]=1;
+    }
+
+    ii acha(int x){
+        if(x==pai[x]) return {x,0};
+        auto prox = acha(pai[x]);
+        pai[x] = prox.f;
+        len[x] = (len[x]+prox.s)%2;
+        return {pai[x],len[x]};
+    }
+
+    void join(int a,int b){
+        auto proxa=acha(a), proxb=acha(b);
+        if(proxa.f==proxb.f) return;
+        if(qtd[proxa.f]<qtd[proxb.f]) swap(proxa,proxb);
+        qtd[proxa.f]+=qtd[proxb.f]; pai[proxb.f]=proxa.f; len[proxb.f] = (1+proxa.s+proxb.s)%2;
+    }
+};
