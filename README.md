@@ -30,4 +30,4 @@ The codes are in C/C++ and are divided into the following topics:
 # String
 - Hash  
 - KMP  
-Suffix Array  
+- Suffix Array  
