@@ -3,7 +3,7 @@ To remind me of some algorithms and help people who are starting in competitive 
 The codes are in C/C++ and are divided into the following topics:  
 
 # Data Struct
-Fenwick Tree  
+[Fenwick Tree](https://github.com/Danihosomi/Codebook/blob/main/Data%20Struct/FenwickTree.cpp)
 Fenwick Tree 2D  
 Indexed Set  
 Segment Tree  
