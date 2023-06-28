@@ -19,7 +19,7 @@ namespace DSU{
         a=acha(a); b=acha(b);
         if(a==b) return p.push(-1);
         ans--; if(qtd[a]<qtd[b]) swap(a,b);
-        p.push(a); qtd[a]+=qtd[b]; pai[b]=a;
+        p.push(b); qtd[a]+=qtd[b]; pai[b]=a;
     }
 
     void rollback(){
@@ -27,6 +27,44 @@ namespace DSU{
         if(a==-1) return ;
         qtd[pai[a]]-=qtd[a];
         pai[a]=a, ans++;
+    }
+};
+
+// DSU persistente
+// ans representa quantas componentes formam o grafo geral
+// Complexidade (log(n))
+namespace DSU{
+    int n, ans, pai[200005], qtd[200005];
+    stack<int> p;
+ 
+    void build(int n1){
+        ans=n=n1;
+        for(int i=0;i<=n+1;i++) pai[i]=i, qtd[i]=1;
+    }
+ 
+    int acha(int x){
+        while(x!=pai[x]) x=pai[x];
+        return x;
+    }
+ 
+    void join(int a,int b){
+        a=acha(a); b=acha(b);
+        if(a==b) return p.push(-1);
+        ans--; if(qtd[a]<qtd[b]) swap(a,b);
+        p.push(b); qtd[a]+=qtd[b]; pai[b]=a;
+    }
+ 
+    void persist(){
+        p.push(-2);
+    }
+ 
+    void rollback(){
+        while(p.top()!=-2){
+            int a=p.top(); p.pop();
+            if(a==-1) continue ;
+            qtd[pai[a]]-=qtd[a];
+            pai[a]=a, ans++;
+        } p.pop();
     }
 };
 
