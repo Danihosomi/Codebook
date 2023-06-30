@@ -1,13 +1,14 @@
 // Com roll-back
 // ans representa quantas componentes formam o grafo geral
-// Complexidade (log(n))
-namespace DSU{
-    int n, ans, pai[200005], qtd[200005];
+// Complexidade (log(n))struct DSU{
+struct DSU{
+    int n, ans;
+    vi pai, qtd;
     stack<int> p;
 
     void build(int n1){
-        ans=n=n1;
-        for(int i=0;i<=n+1;i++) pai[i]=i, qtd[i]=1;
+        ans=n=n1; pai.resize(n+1); qtd.resize(n+1);
+        for(int i=0;i<=n;i++) pai[i]=i, qtd[i]=1;
     }
 
     int acha(int x){
@@ -34,12 +35,13 @@ namespace DSU{
 // ans representa quantas componentes formam o grafo geral
 // Complexidade (log(n))
 namespace DSU{
-    int n, ans, pai[200005], qtd[200005];
+    int n, ans;
+    vi pai, qtd;
     stack<int> p;
  
     void build(int n1){
-        ans=n=n1;
-        for(int i=0;i<=n+1;i++) pai[i]=i, qtd[i]=1;
+        ans=n=n1; pai.resize(n+2); qtd.resize(n+2);
+        for(int i=0;i<=n;i++) pai[i]=i, qtd[i]=1;
     }
  
     int acha(int x){
