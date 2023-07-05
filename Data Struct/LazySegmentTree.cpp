@@ -4,14 +4,14 @@ struct segmentTree{
         ll val, lazy;
     };
     
-    static int n;
+    int n;
     int v[MAXN];
     node seg3[4*MAXN], nulo;
 
     void init(int  n1,int *v1){
         n = n1; 
         for(int i=0;i<=n;i++) v[i]=v1[i];
-        build();
+        build(1,1,n);
     }
 
     node join(node a,node b){
@@ -20,7 +20,7 @@ struct segmentTree{
         return resp;
     }
 
-    void build(int id=1,int l=1,int r=n){
+    void build(int id,int l,int r){
         if(l==r){
             seg3[id].val = v[l]; seg3[id].lazy=0;
             return ;
@@ -42,7 +42,7 @@ struct segmentTree{
         seg3[R(id)].lazy+=num;
     }
 
-    void update(int i,int j,int val,int id=1,int l=1,int r=n){
+    void update(int id,int l,int r,int i,int j,int val){
         refresh(id,l,r);
         if(j<l || r<i) return;
         if(i<=l && r<=j){ // need to define if it is a sum or a set
@@ -51,8 +51,12 @@ struct segmentTree{
             return ;
         }
         int m=(l+r)>>1;
-        update(i,j,val,L(id),l,m); update(i,j,val,R(id),m+1,r);
+        update(L(id),l,m,i,j,val); update(R(id),m+1,r,i,j,val);
         seg3[id]=join(seg3[L(id)],seg3[R(id)]);    
+    }
+
+    void update(int l,int r,int val){
+        update(1,1,n,l,r,val);
     }
 
     node query(int id,int l,int r,int i,int j){
@@ -61,5 +65,9 @@ struct segmentTree{
         if(i<=l && r<=j) return seg3[id];
         int meio=(l+r)>>1;
         return join(query(L(id),l,meio,i,j),query(R(id),meio+1,r,i,j));
+    }
+
+    node query(int l,int r){
+        return query(1,1,n,l,r);
     }
 };
