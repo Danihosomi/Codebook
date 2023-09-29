@@ -5,8 +5,8 @@
 // 
 // Complexidade: O(log(n))
 
-#define MI -1e9
-#define MA 1e9
+const int MI = -(int)1e9;
+const int MA = (int)1e9;
 
 struct LiChao{
     
@@ -31,21 +31,21 @@ struct LiChao{
     }
 
     void add(linha S,ll l=MI,ll r=MA,int p = 0){
-        ll m = (l+r)/2;
+        ll m = (l+r)/2LL;
 		bool testaL = S(l) < v[p](l);
 		bool testaM = S(m) < v[p](m);
 		bool testaR = S(r) < v[p](r);
 
 		if (testaM) swap(v[p],S), swap(v[p].CH, S.CH);
 		if (S.b == linf) return;
-		if (testaL != testaM) add(r, l, m-1, CH(p, 0));
-		else if (testaR != testaM) add(r, m+1, r, CH(p, 1));
+		if (testaL != testaM) add(S, l, m-1, CH(p, 0));
+		else if (testaR != testaM) add(S, m+1, r, CH(p, 1));
     }
 
     ll query(int x,ll l=MI,ll r=MA,int p = 0){
-        ll m = (l+r)/2, ret = v[p](x);
+        ll m = (l+r)/2LL, ret = v[p](x);
         if(ret==linf) return ret;
-        return (x<m ? min(ret, query(x, l, m-1, CH(p, 0))) : min(ret, query(x, m+1, r, CH(p, 1))));
+        return min(ret,(x<m ? query(x, l, m-1, CH(p, 0)) : query(x, m+1, r, CH(p, 1))));
     }
 
 };

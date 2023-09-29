@@ -2,7 +2,7 @@
 // F Moratonistas
 
 int n;
-ll cost[505][505], m[505][505];
+ll cost[505][505];
 vi p, way;
 vector<ll> u, v;
 
