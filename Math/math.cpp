@@ -20,6 +20,19 @@ int gcdExtended(int a,int b,int& x,int& y){
     return gcd;
 }
 
+bool find_any_solution(ll a, ll b, ll c, ll &x0, ll &y0, ll &g) { // for Ax + By = C
+    g = gcdExtended(abs(a), abs(b), x0, y0);
+    if (c % g) {
+        return false;
+    }
+
+    x0 *= c / g;
+    y0 *= c / g;
+    if (a < 0) x0 = -x0;
+    if (b < 0) y0 = -y0;
+    return true;
+}
+
 ll inv_mod(ll a,ll b){
     return (a > 1 ? b-inv_mod(b%a, a)*b/a : 1);
 }
@@ -63,4 +76,22 @@ ll sum_of_divisors_from1_toN(ll N){
     }
     
     return ans;
+}
+
+struct Congruence {
+    ll a, m;
+};
+
+ll CRT(vector<Congruence> congruences) {
+    ll M = 1;
+
+    for (auto congruence : congruences)  M *= congruence.m;
+
+    ll solution = 0;
+    for (auto congruence : congruences) {
+        ll M_i = M / congruence.m;
+        ll N_i = inv_mod(M_i, congruence.m);
+        solution = (solution + ((congruence.a * M_i) % M)*N_i)%M;
+    }
+    return solution;
 }
